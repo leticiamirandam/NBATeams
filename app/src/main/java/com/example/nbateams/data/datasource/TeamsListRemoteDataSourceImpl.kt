@@ -5,7 +5,7 @@ import com.example.nbateams.data.model.response.TeamsListResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-internal class TeamsListRemoteDataSouceImpl(
+internal class TeamsListRemoteDataSourceImpl(
     private val nbaService: NBAService
 ) : TeamsListRemoteDataSource {
     override fun getTeamsList(): Flow<TeamsListResponse> = flow {
