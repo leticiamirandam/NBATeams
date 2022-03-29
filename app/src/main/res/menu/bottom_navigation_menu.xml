@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/teamsMenuItem"
+        android:enabled="true"
+        android:title="@string/teams_menu_item_title"
+        android:icon="@drawable/ic_baseline_people"/>
+    <item
+        android:id="@+id/playersMenuItem"
+        android:enabled="true"
+        android:title="@string/players_menu_item_title"
+        android:icon="@drawable/ic_baseline_person"/>
+</menu>

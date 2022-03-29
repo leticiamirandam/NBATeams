@@ -1,4 +1,8 @@
 package com.example.nbateams.presentation.playerslist
 
-class PlayersListViewModel {
+import androidx.lifecycle.ViewModel
+
+class PlayersListViewModel : ViewModel() {
+
+
 }

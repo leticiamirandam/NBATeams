@@ -1,14 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        retrofitVersion = '2.7.1'
-        retrofitVersion = '2.7.1'
+        retrofit_version = '2.7.1'
         kotlin_version = '1.6.0'
-        okhttpVersion = '4.9.1'
-        coroutinesVersion = '1.5.1'
+        okhttp_version = '4.9.1'
+        coroutines_version = '1.5.2'
         koin_version = '2.0.1'
         viewmodel_ktx_version = '2.4.1'
         lifecycle_extensions_version = '2.2.0'
+        lifecycle_runtime_version = '2.4.1'
+        navigation_version = '2.4.1'
+        livedata_version = '2.4.1'
     }
     repositories {
         google()

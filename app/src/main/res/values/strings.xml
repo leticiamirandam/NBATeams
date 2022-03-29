@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NBATeams</string>
+    <string name="teams_menu_item_title">Times</string>
+    <string name="players_menu_item_title">Jogadores</string>
 </resources>

@@ -1,4 +1,8 @@
 package com.example.nbateams.presentation.playerslist
 
-class PlayersListFragment {
+import androidx.fragment.app.Fragment
+import com.example.nbateams.R
+
+class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
+
 }

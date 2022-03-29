@@ -5,9 +5,9 @@ import com.example.nbateams.domain.repository.TeamsListRepository
 import kotlinx.coroutines.flow.Flow
 
 internal class GetTeamsListUseCase(
-    private val temListRepository: TeamsListRepository
+    private val teamListRepository: TeamsListRepository
 ) {
     operator fun invoke(): Flow<TeamsList> {
-        return temListRepository.getTeamsList()
+        return teamListRepository.getTeamsList()
     }
 }
