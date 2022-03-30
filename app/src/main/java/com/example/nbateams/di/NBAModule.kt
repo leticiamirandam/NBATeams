@@ -13,15 +13,18 @@ import com.example.nbateams.domain.repository.PlayersListRepository
 import com.example.nbateams.domain.repository.TeamsListRepository
 import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import com.example.nbateams.domain.usecase.GetTeamsListUseCase
+import com.example.nbateams.presentation.playerslist.PlayersListViewModel
+import com.example.nbateams.presentation.teamslist.TeamsListViewModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-private var BASE_URL = "https://pokeapi.co/api/v2/"
+private var BASE_URL = "https://www.balldontlie.io/api/v1/"
 
 val networkModule = module {
     single<Gson> { GsonBuilder().create() }
@@ -59,4 +62,17 @@ val dataModule = module {
     factory<TeamsListRemoteDataSource> { TeamsListRemoteDataSourceImpl(get()) }
     factory<PlayersListRepository> { PlayersListRepositoryImpl(get(), PlayersListMapper()) }
     factory<TeamsListRepository> { TeamsListRepositoryImpl(get(), TeamsListMapper()) }
+}
+
+val presentationModule = module {
+    viewModel {
+        TeamsListViewModel(
+            getTeamsListUseCase = get()
+        )
+    }
+    viewModel {
+        PlayersListViewModel(
+            getPlayersListUseCase = get()
+        )
+    }
 }
