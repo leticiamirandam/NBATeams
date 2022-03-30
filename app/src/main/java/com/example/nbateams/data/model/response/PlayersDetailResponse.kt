@@ -15,11 +15,11 @@ data class PlayersDetailResponse(
     @SerializedName("position")
     val position: String,
     @SerializedName("height_feet")
-    val heightFeet: String,
+    val heightFeet: Int,
     @SerializedName("height_inches")
-    val heightInches: String,
+    val heightInches: Int,
     @SerializedName("weight_pounds")
-    val weightPounds: String,
+    val weightPounds: Int,
     @SerializedName("team")
     val team: TeamDetailResponse
 ): Parcelable

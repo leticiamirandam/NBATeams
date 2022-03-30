@@ -18,14 +18,14 @@ internal class TeamsListViewModel(
     }
 
     fun getTeamsList() {
-//        viewModelScope.launch {
+        viewModelScope.launch {
 //            getTeamsListUseCase
 //                .flowOn(dispatcher)
 //                .onStart()
 //                .catch { handleError() }
 //                .onCompletion()
 //                .collect { handleSuccess() }
-//        }
+        }
     }
 
     fun handleSuccess() {

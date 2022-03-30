@@ -12,9 +12,9 @@ internal class PlayersListMapper {
                 firstName = playersDetailResponse.firstName,
                 lastName = playersDetailResponse.lastName,
                 position = playersDetailResponse.position,
-                heightFeet = playersDetailResponse.heightFeet,
-                heightInches = playersDetailResponse.heightInches,
-                weightPounds = playersDetailResponse.weightPounds,
+                heightFeet = playersDetailResponse.heightFeet.toString(),
+                heightInches = playersDetailResponse.heightInches.toString(),
+                weightPounds = playersDetailResponse.weightPounds.toString(),
                 team = TeamMapper().map(playersDetailResponse.team)
             )
         }
