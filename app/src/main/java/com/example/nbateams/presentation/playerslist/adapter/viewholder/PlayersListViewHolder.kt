@@ -10,7 +10,7 @@ class PlayersListViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(player: PlayersList.Player) {
-        itemView.playerName.text = player.firstName + player.lastName
+        itemView.playerName.text = player.firstName + " " + player.lastName
         itemView.playerPosition.text = "Position: " + player.position
         itemView.playerWeight.text = "Weight (Pounds):" + player.weightPounds
         itemView.playerHeight.text = "Height (Feet):" + player.heightFeet

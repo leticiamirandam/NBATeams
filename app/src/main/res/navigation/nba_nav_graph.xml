@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nba_nav_graph"
-    app:startDestination="@id/teamsListFragment">
+    app:startDestination="@id/teamsMenuItem">
 
     <fragment
-        android:id="@+id/teamsListFragment"
+        android:id="@+id/teamsMenuItem"
         android:name="com.example.nbateams.presentation.teamslist.TeamsListFragment"
         tools:layout="@layout/teams_list_fragment" />
 
     <fragment
-        android:id="@+id/playersListFragment"
+        android:id="@+id/playersMenuItem"
         android:name="com.example.nbateams.presentation.playerslist.PlayersListFragment"
         tools:layout="@layout/players_list_fragment" />
 
