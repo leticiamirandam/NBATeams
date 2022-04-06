@@ -7,16 +7,7 @@ internal class PlayersListMapper {
 
     fun map(response: PlayersListResponse) = PlayersList(
         players = response.data.map { playersDetailResponse ->
-            PlayersList.Player(
-                id = playersDetailResponse.id,
-                firstName = playersDetailResponse.firstName,
-                lastName = playersDetailResponse.lastName,
-                position = playersDetailResponse.position,
-                heightFeet = playersDetailResponse.heightFeet.toString(),
-                heightInches = playersDetailResponse.heightInches.toString(),
-                weightPounds = playersDetailResponse.weightPounds.toString(),
-                team = TeamMapper().map(playersDetailResponse.team)
-            )
+            PlayerMapper().map(playersDetailResponse)
         }
     )
 }

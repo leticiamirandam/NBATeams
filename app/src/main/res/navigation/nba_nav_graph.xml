@@ -15,4 +15,9 @@
         android:name="com.example.nbateams.presentation.playerslist.PlayersListFragment"
         tools:layout="@layout/players_list_fragment" />
 
+    <fragment
+        android:id="@+id/playerDetailFragment"
+        android:name="com.example.nbateams.presentation.playerdetail.PlayerDetailFragment"
+        tools:layout="@layout/player_detail_fragment" />
+
 </navigation>

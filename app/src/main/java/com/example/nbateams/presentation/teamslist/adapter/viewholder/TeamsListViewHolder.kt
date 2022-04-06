@@ -10,10 +10,12 @@ class TeamsListViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(team: TeamsList.Team) {
-        itemView.teamAbbreviation.text = team.abbreviation
-        itemView.teamName.text = "Full name: " + team.fullName
-        itemView.teamCity.text = "City: " + team.city
-        itemView.teamDivision.text = "Division: " + team.division
-        itemView.teamConference.text = "Conference: " + team.conference
+        with(itemView) {
+            teamAbbreviation.text = team.abbreviation
+            teamName.text = "Full name: " + team.fullName
+            teamCity.text = "City: " + team.city
+            teamDivision.text = "Division: " + team.division
+            teamConference.text = "Conference: " + team.conference
+        }
     }
 }

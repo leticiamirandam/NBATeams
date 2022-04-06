@@ -1,18 +1,25 @@
 package com.example.nbateams.di
 
 import com.example.nbateams.data.api.NBAService
+import com.example.nbateams.data.datasource.*
+import com.example.nbateams.data.datasource.PlayerDetailRemoteDataSource
 import com.example.nbateams.data.datasource.PlayersListRemoteDataSource
 import com.example.nbateams.data.datasource.PlayersListRemoteDataSourceImpl
-import com.example.nbateams.data.datasource.TeamsListRemoteDataSourceImpl
 import com.example.nbateams.data.datasource.TeamsListRemoteDataSource
+import com.example.nbateams.data.datasource.TeamsListRemoteDataSourceImpl
+import com.example.nbateams.data.mapper.PlayerMapper
 import com.example.nbateams.data.mapper.PlayersListMapper
 import com.example.nbateams.data.mapper.TeamsListMapper
+import com.example.nbateams.data.repository.PlayerDetailRepositoryImpl
 import com.example.nbateams.data.repository.PlayersListRepositoryImpl
 import com.example.nbateams.data.repository.TeamsListRepositoryImpl
+import com.example.nbateams.domain.repository.PlayerDetailRepository
 import com.example.nbateams.domain.repository.PlayersListRepository
 import com.example.nbateams.domain.repository.TeamsListRepository
+import com.example.nbateams.domain.usecase.GetPlayerDetailUseCase
 import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import com.example.nbateams.domain.usecase.GetTeamsListUseCase
+import com.example.nbateams.presentation.playerdetail.PlayerDetailViewModel
 import com.example.nbateams.presentation.playerslist.PlayersListViewModel
 import com.example.nbateams.presentation.teamslist.TeamsListViewModel
 import com.google.gson.Gson
@@ -55,13 +62,16 @@ val networkModule = module {
 val domainModule = module {
     factory { GetPlayersListUseCase(get()) }
     factory { GetTeamsListUseCase(get()) }
+    factory { GetPlayerDetailUseCase(get()) }
 }
 
 val dataModule = module {
     factory<PlayersListRemoteDataSource> { PlayersListRemoteDataSourceImpl(get()) }
     factory<TeamsListRemoteDataSource> { TeamsListRemoteDataSourceImpl(get()) }
+    factory<PlayerDetailRemoteDataSource> { PlayerDetailRemoteDataSourceImpl(get()) }
     factory<PlayersListRepository> { PlayersListRepositoryImpl(get(), PlayersListMapper()) }
     factory<TeamsListRepository> { TeamsListRepositoryImpl(get(), TeamsListMapper()) }
+    factory<PlayerDetailRepository> { PlayerDetailRepositoryImpl(get(), PlayerMapper()) }
 }
 
 val presentationModule = module {
@@ -73,6 +83,12 @@ val presentationModule = module {
     viewModel {
         PlayersListViewModel(
             getPlayersListUseCase = get()
+        )
+    }
+    viewModel { (id: Int) ->
+        PlayerDetailViewModel(
+            playerId = id,
+            getPlayerDetailUseCase = get()
         )
     }
 }

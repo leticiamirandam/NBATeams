@@ -6,13 +6,19 @@ import com.example.nbateams.domain.model.PlayersList
 import kotlinx.android.synthetic.main.player_item.view.*
 
 class PlayersListViewHolder(
-    itemView: View
+    itemView: View,
+    private val listener: (PlayersList.Player) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(player: PlayersList.Player) {
-        itemView.playerName.text = player.firstName + " " + player.lastName
-        itemView.playerPosition.text = "Position: " + player.position
-        itemView.playerWeight.text = "Weight (Pounds):" + player.weightPounds
-        itemView.playerHeight.text = "Height (Feet):" + player.heightFeet
+        with(itemView) {
+            playerName.text = player.firstName + " " + player.lastName
+            playerPosition.text = "Position: " + player.position
+            playerWeight.text = "Weight (Pounds):" + player.weightPounds
+            playerHeight.text = "Height (Feet):" + player.heightFeet
+            setOnClickListener {
+                listener.invoke(player)
+            }
+        }
     }
 }
