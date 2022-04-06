@@ -46,10 +46,11 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
     private fun setupPlayerDetailObserver() {
         viewModel.playerDetail.observe(viewLifecycleOwner) {
             with(binding) {
-                playerName.text = it.firstName + " " + it.lastName
+                playerName.text = "${it.firstName} ${it.lastName}"
                 playerTeam.text = it.team.fullName
-                playerHeight.text = it.heightFeet + " feet"
-                playerWeight.text = it.weightPounds + " pounds"
+                playerHeight.text = "${it.heightFeet}${getString(R.string.height_measure_unit)}"
+                playerWeight.text = "${it.weightPounds}${getString(R.string.weight_measure_unit)}"
+                playerPosition.text = it.position
             }
         }
     }

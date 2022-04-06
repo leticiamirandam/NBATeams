@@ -50,6 +50,7 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
                 teamCity.text = it.city
                 teamConference.text = it.conference
                 teamDivision.text = it.division
+                teamAbbreviation.text = it.abbreviation
             }
         }
     }
