@@ -8,7 +8,9 @@ import com.example.nbateams.R
 import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.presentation.teamslist.adapter.viewholder.TeamsListViewHolder
 
-internal class TeamsListAdapter() : RecyclerView.Adapter<TeamsListViewHolder>() {
+internal class TeamsListAdapter(
+    private val listener: (TeamsList.Team) -> Unit
+) : RecyclerView.Adapter<TeamsListViewHolder>() {
 
     var teamsList = emptyList<TeamsList.Team>()
         set(value) {
@@ -25,7 +27,7 @@ internal class TeamsListAdapter() : RecyclerView.Adapter<TeamsListViewHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamsListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.team_item, parent, false)
-        return TeamsListViewHolder(view)
+        return TeamsListViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: TeamsListViewHolder, position: Int) {

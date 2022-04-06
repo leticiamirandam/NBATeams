@@ -6,7 +6,8 @@ import com.example.nbateams.domain.model.TeamsList
 import kotlinx.android.synthetic.main.team_item.view.*
 
 class TeamsListViewHolder(
-    itemView: View
+    itemView: View,
+    private val listener: (TeamsList.Team) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(team: TeamsList.Team) {
@@ -16,6 +17,9 @@ class TeamsListViewHolder(
             teamCity.text = "City: " + team.city
             teamDivision.text = "Division: " + team.division
             teamConference.text = "Conference: " + team.conference
+            setOnClickListener {
+                listener.invoke(team)
+            }
         }
     }
 }
