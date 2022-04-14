@@ -3,23 +3,19 @@ package com.example.nbateams.presentation.playerslist.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.nbateams.domain.model.PlayersList
 
-class PlayersListDiffCallback(
-    private val oldList: List<PlayersList.Player>,
-    private val newList: List<PlayersList.Player>
-) : DiffUtil.Callback() {
-    override fun getOldListSize(): Int {
-        return oldList.size
+class PlayersListDiffCallback() : DiffUtil.ItemCallback<PlayersList.Player>() {
+
+    override fun areItemsTheSame(
+        oldItem: PlayersList.Player,
+        newItem: PlayersList.Player
+    ): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun getNewListSize(): Int {
-        return newList.size
-    }
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return true
+    override fun areContentsTheSame(
+        oldItem: PlayersList.Player,
+        newItem: PlayersList.Player
+    ): Boolean {
+        return oldItem == newItem
     }
 }

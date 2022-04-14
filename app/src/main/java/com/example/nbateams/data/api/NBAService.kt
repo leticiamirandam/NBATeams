@@ -6,6 +6,7 @@ import com.example.nbateams.data.model.response.TeamDetailResponse
 import com.example.nbateams.data.model.response.TeamsListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface NBAService {
 
@@ -13,7 +14,9 @@ interface NBAService {
     suspend fun getTeamsList(): TeamsListResponse
 
     @GET("players")
-    suspend fun getPlayersList(): PlayersListResponse
+    suspend fun getPlayersList(
+        @Query("page") page: Int
+    ): PlayersListResponse
 
     @GET("players/{id}")
     suspend fun getPlayerDetail(

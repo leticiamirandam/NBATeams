@@ -76,7 +76,7 @@ val dataModule = module {
     factory<TeamsListRemoteDataSource> { TeamsListRemoteDataSourceImpl(get()) }
     factory<PlayerDetailRemoteDataSource> { PlayerDetailRemoteDataSourceImpl(get()) }
     factory<TeamDetailRemoteDataSource> { TeamDetailRemoteDataSourceImpl(get()) }
-    factory<PlayersListRepository> { PlayersListRepositoryImpl(get(), PlayersListMapper()) }
+    factory<PlayersListRepository> { PlayersListRepositoryImpl(get()) }
     factory<TeamsListRepository> { TeamsListRepositoryImpl(get(), TeamsListMapper()) }
     factory<PlayerDetailRepository> { PlayerDetailRepositoryImpl(get(), PlayerMapper()) }
     factory<TeamDetailRepository> { TeamDetailRepositoryImpl(get(), TeamMapper()) }
@@ -90,7 +90,8 @@ val presentationModule = module {
     }
     viewModel {
         PlayersListViewModel(
-            getPlayersListUseCase = get()
+            playersListUseCase = get(),
+            playerMapper = PlayerMapper()
         )
     }
     viewModel { (id: Int) ->
