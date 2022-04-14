@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">NBATeams</string>
-    <string name="teams_menu_item_title">Times</string>
-    <string name="players_menu_item_title">Jogadores</string>
+    <string name="teams_menu_item_title">Teams</string>
+    <string name="players_menu_item_title">Players</string>
     <string name="full_name">Full name: </string>
     <string name="team_name">Team name: </string>
     <string name="height">Height: </string>
@@ -11,6 +11,6 @@
     <string name="conference">Conference: </string>
     <string name="division">Division: </string>
     <string name="abbreviation">Abbreviation: </string>
-    <string name="height_measure_unit">\" feet\"</string>
-    <string name="weight_measure_unit">\" pounds\"</string>
+    <string name="height_measure_unit">" feet"</string>
+    <string name="weight_measure_unit">" pounds"</string>
 </resources>

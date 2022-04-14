@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayersListFragmentBinding
 import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.presentation.playerslist.adapter.PlayersListAdapter
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
@@ -46,11 +43,9 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
         findNavController().navigate(R.id.playerDetailFragment, bundle)
     }
 
-    private fun setupPlayersListObserver(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getPlayersList().collectLatest { players ->
-                adapter?.submitData(players)
-            }
+    private fun setupPlayersListObserver() {
+        viewModel.playersList.observe(viewLifecycleOwner){
+            adapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 }
