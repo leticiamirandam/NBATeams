@@ -34,6 +34,7 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
         }
         binding.recyclerViewPlayers.adapter = adapter
         setupPlayersListObserver()
+        setupFabBackToTop()
     }
 
     private fun onPlayerItemClick(player: PlayersList.Player) {
@@ -44,8 +45,14 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
     }
 
     private fun setupPlayersListObserver() {
-        viewModel.playersList.observe(viewLifecycleOwner){
+        viewModel.playersList.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+    }
+
+    private fun setupFabBackToTop() {
+        binding.fabBackTop.setOnClickListener {
+            binding.recyclerViewPlayers.smoothScrollToPosition(0)
         }
     }
 }

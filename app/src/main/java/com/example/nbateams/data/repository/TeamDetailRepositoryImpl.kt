@@ -14,5 +14,5 @@ internal class TeamDetailRepositoryImpl(
     override fun getTeamDetail(id: Int): Flow<TeamsList.Team> =
         teamDetailRemoteDataSource
             .getTeamDetail(id)
-            .map(teamDetailMapper::map)
+            .map { teamDetailMapper.map(it, null) }
 }

@@ -1,5 +1,6 @@
 package com.example.nbateams.presentation.teamslist
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,13 +28,13 @@ internal class TeamsListViewModel(
             getTeamsListUseCase()
                 .flowOn(dispatcher)
                 .onStart { isLoading = true }
-                .catch { handleError() }
+                .catch { handleError(it) }
                 .onCompletion { isLoading = false }
                 .collect { teamsListResult.value = it }
         }
     }
 
-    fun handleError() {
-        //it will be implemented
+    fun handleError(throwable: Throwable) {
+        Log.i("ERRO: ", throwable.localizedMessage)
     }
 }

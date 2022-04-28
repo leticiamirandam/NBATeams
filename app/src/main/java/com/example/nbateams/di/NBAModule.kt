@@ -1,6 +1,7 @@
 package com.example.nbateams.di
 
 import com.example.nbateams.data.api.NBAService
+import com.example.nbateams.data.api.PictureService
 import com.example.nbateams.data.datasource.*
 import com.example.nbateams.data.datasource.PlayerDetailRemoteDataSource
 import com.example.nbateams.data.datasource.PlayersListRemoteDataSource
@@ -31,12 +32,14 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 private var BASE_URL = "https://www.balldontlie.io/api/v1/"
+private var PICTURES_URL = "https://sheets.googleapis.com/v4/spreadsheets/"
 
 val networkModule = module {
     single<Gson> { GsonBuilder().create() }
@@ -54,13 +57,27 @@ val networkModule = module {
             .addConverterFactory(get<GsonConverterFactory>())
             .addCallAdapterFactory(get<RxJava2CallAdapterFactory>())
     }
-    single<Retrofit> {
+}
+
+val nbaNetworkModule = module {
+    single<Retrofit>(named("nba")) {
         get<Retrofit.Builder>()
             .baseUrl(BASE_URL)
             .build()
     }
     single<NBAService> {
-        get<Retrofit>().create(NBAService::class.java)
+        get<Retrofit>(named("nba")).create(NBAService::class.java)
+    }
+}
+
+val networkPictureModule = module {
+    single<Retrofit>(named("pictures")) {
+        get<Retrofit.Builder>()
+            .baseUrl(PICTURES_URL)
+            .build()
+    }
+    single<PictureService> {
+        get<Retrofit>(named("pictures")).create(PictureService::class.java)
     }
 }
 
@@ -73,7 +90,7 @@ val domainModule = module {
 
 val dataModule = module {
     factory<PlayersListRemoteDataSource> { PlayersListRemoteDataSourceImpl(get()) }
-    factory<TeamsListRemoteDataSource> { TeamsListRemoteDataSourceImpl(get()) }
+    factory<TeamsListRemoteDataSource> { TeamsListRemoteDataSourceImpl(get(), get()) }
     factory<PlayerDetailRemoteDataSource> { PlayerDetailRemoteDataSourceImpl(get()) }
     factory<TeamDetailRemoteDataSource> { TeamDetailRemoteDataSourceImpl(get()) }
     factory<PlayersListRepository> { PlayersListRepositoryImpl(get(), PlayerMapper()) }

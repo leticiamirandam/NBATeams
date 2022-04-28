@@ -39,6 +39,7 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     private fun onTeamItemClick(team: TeamsList.Team) {
         val bundle = Bundle().apply {
             putInt("teamId", team.id)
+            putString("teamPicture", team.picture)
         }
         findNavController().navigate(R.id.teamDetailFragment, bundle)
     }

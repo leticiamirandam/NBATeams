@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.nbateams.R
 import com.example.nbateams.databinding.TeamDetailFragmentBinding
+import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 private const val TEAM_ID = "teamId"
+private const val TEAM_PICTURE = "teamPicture"
 
 class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
 
@@ -19,11 +21,13 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
     }
     private lateinit var binding: TeamDetailFragmentBinding
     private var teamId: Int? = null
+    private var teamPicture: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             teamId = it.getInt(TEAM_ID)
+            teamPicture = it.getString(TEAM_PICTURE)
         }
     }
 
@@ -32,6 +36,9 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
+        Picasso.get()
+            .load(teamPicture)
+            .into(binding.teamPicture)
         setupTeamDetailObserver()
     }
 

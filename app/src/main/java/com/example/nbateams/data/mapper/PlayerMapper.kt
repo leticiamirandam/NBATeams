@@ -15,7 +15,7 @@ internal class PlayerMapper {
         heightFeet = playersDetailResponse.heightFeet.toString(),
         heightInches = playersDetailResponse.heightInches.toString(),
         weightPounds = playersDetailResponse.weightPounds.toString(),
-        team = TeamMapper().map(playersDetailResponse.team)
+        team = TeamMapper().map(playersDetailResponse.team, null)
     )
 
     fun mapPlayerListItem(playerItem: PagingData<PlayersDetailResponse>) =
@@ -28,7 +28,7 @@ internal class PlayerMapper {
                 heightFeet = playersDetailResponse.heightFeet.toString(),
                 heightInches = playersDetailResponse.heightInches.toString(),
                 weightPounds = playersDetailResponse.weightPounds.toString(),
-                team = TeamMapper().map(playersDetailResponse.team)
+                team = TeamMapper().map(playersDetailResponse.team, null)
             )
         }
 }

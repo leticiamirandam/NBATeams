@@ -10,6 +10,7 @@ data class TeamsList(
         val conference: String,
         val division: String,
         val fullName: String,
-        val name: String
+        val name: String,
+        val picture: String
     )
 }

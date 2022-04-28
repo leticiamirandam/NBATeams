@@ -9,7 +9,7 @@ class NBAApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@NBAApplication)
-            modules(listOf(networkModule, domainModule, dataModule, presentationModule))
+            modules(listOf(networkModule, nbaNetworkModule, networkPictureModule, domainModule, dataModule, presentationModule))
         }
     }
 }
