@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     android:background="@color/transparent_orange_700">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange_500"
+        android:minHeight="?attr/actionBarSize" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPlayers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/player_item" />
 
@@ -19,11 +27,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/large_margin"
-        android:backgroundTint="@color/orange_700"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/large_margin"
         android:src="@drawable/ic_back_top"
         app:fabSize="normal"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:elevation="0dp"/>
 
     <ProgressBar
         android:id="@+id/loadingProgress"

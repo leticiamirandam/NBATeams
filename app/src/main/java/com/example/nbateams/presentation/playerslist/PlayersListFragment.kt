@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayersListFragmentBinding
 import com.example.nbateams.domain.model.PlayersList
@@ -56,8 +57,18 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
     }
 
     private fun setupFabBackToTop() {
-        binding.fabBackTop.setOnClickListener {
-            binding.recyclerViewPlayers.smoothScrollToPosition(0)
+        with(binding) {
+            recyclerViewPlayers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val layoutManager = recyclerView.layoutManager as? LinearLayoutManager
+                    if (layoutManager != null) {
+                        fabBackTop.isVisible = layoutManager.findFirstVisibleItemPosition() > 0
+                    }
+                }
+            })
+            fabBackTop.setOnClickListener {
+                recyclerViewPlayers.smoothScrollToPosition(0)
+            }
         }
     }
 

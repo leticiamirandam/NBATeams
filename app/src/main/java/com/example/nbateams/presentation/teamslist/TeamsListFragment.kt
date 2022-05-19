@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +17,10 @@ import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.presentation.teamslist.adapter.TeamsListAdapter
 import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val LIGHT_THEME = 0
+private const val DARK_THEME = 1
+private const val FOLLOW_SYSTEM_THEME = 2
 
 class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
 
@@ -45,15 +52,34 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
 
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.themeMenu -> changeAppTheme()
             }
             true
         }
     }
 
-    private fun changeAppTheme(){
+    private fun changeAppTheme() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.theme_menu))
+        val styles = arrayOf("Light", "Dark", "System default")
+        val checkedItem = 0
 
+        builder.setSingleChoiceItems(styles, checkedItem) { dialog, selectedTheme ->
+            when (selectedTheme) {
+                LIGHT_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_NO)
+                DARK_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_YES)
+                FOLLOW_SYSTEM_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun applySelectedTheme(selectedTheme: Int) {
+        AppCompatDelegate.setDefaultNightMode(selectedTheme)
+        (activity as AppCompatActivity).delegate.applyDayNight()
     }
 
     private fun onTeamItemClick(team: TeamsList.Team) {

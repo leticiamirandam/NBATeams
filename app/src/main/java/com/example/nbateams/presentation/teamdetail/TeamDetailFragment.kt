@@ -40,7 +40,8 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
         }
         Picasso.get()
             .load(teamPicture)
-            .placeholder(R.drawable.nba_logo)
+            .error(R.drawable.nba_logo)
+            .placeholder(R.drawable.progress_animation)
             .into(binding.teamPicture)
         setupTeamDetailObserver()
         setupLoadingObserver()
