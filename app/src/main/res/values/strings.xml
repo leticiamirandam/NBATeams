@@ -13,4 +13,9 @@
     <string name="abbreviation">Abbreviation: </string>
     <string name="height_measure_unit">" feet"</string>
     <string name="weight_measure_unit">" pounds"</string>
+    <string name="title_error_dialog">An error has occurred</string>
+    <string name="text_error_dialog">Please check your connection and try again.</string>
+    <string name="button_try_again">Try again</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="theme_menu">Change theme</string>
 </resources>

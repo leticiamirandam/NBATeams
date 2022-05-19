@@ -1,5 +1,6 @@
 package com.example.nbateams.presentation.teamdetail
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,24 +18,30 @@ internal class TeamDetailViewModel(
 ) : ViewModel() {
 
     val teamDetail = MutableLiveData<TeamsList.Team>()
-    var isLoading: Boolean = false
+    var isLoading = MutableLiveData<Boolean>()
+    var isError = MutableLiveData<Boolean>()
 
     init {
         getTeamDetail()
     }
 
-    private fun getTeamDetail() {
+    fun getTeamDetail() {
         viewModelScope.launch {
             getTeamDetailUseCase(teamId)
                 .flowOn(dispatcher)
-                .onStart { isLoading = true }
-                .catch { handleError() }
-                .onCompletion { isLoading = false }
+                .onStart { isLoading.value = true }
+                .catch {
+                    isError.value = true
+                    handleError(it)
+                }
+                .onCompletion {
+                    isLoading.value = false
+                }
                 .collect { teamDetail.value = it }
         }
     }
 
-    private fun handleError() {
-        //it will be implemented
+    private fun handleError(throwable: Throwable) {
+        Log.i("ERRO: ", throwable.localizedMessage)
     }
 }

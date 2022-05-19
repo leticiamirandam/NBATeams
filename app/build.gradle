@@ -84,6 +84,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     implementation "com.squareup.picasso:picasso:$picasso_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
 repositories {
     mavenCentral()

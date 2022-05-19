@@ -1,9 +1,10 @@
-package com.example.nbateams
+package com.example.nbateams.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.nbateams.R
 import com.example.nbateams.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.nbateams.R
 import com.example.nbateams.databinding.TeamDetailFragmentBinding
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -38,8 +40,11 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
         }
         Picasso.get()
             .load(teamPicture)
+            .placeholder(R.drawable.nba_logo)
             .into(binding.teamPicture)
         setupTeamDetailObserver()
+        setupLoadingObserver()
+        setupErrorObserver()
     }
 
     override fun onCreateView(
@@ -53,11 +58,29 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
     private fun setupTeamDetailObserver() {
         viewModel.teamDetail.observe(viewLifecycleOwner) {
             with(binding) {
+                detailCard.isVisible = true
                 teamName.text = it.fullName
                 teamCity.text = it.city
                 teamConference.text = it.conference
                 teamDivision.text = it.division
                 teamAbbreviation.text = it.abbreviation
+            }
+        }
+    }
+
+    private fun setupLoadingObserver(){
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.loadingProgress.isVisible = it
+        }
+    }
+
+    private fun setupErrorObserver(){
+        viewModel.isError.observe(viewLifecycleOwner) {
+            binding.errorDialog.root.isVisible = it
+            binding.detailCard.isVisible = !it
+            binding.errorDialog.root.buttonTryAgain.setOnClickListener {
+                viewModel.isError.value = false
+                viewModel.getTeamDetail()
             }
         }
     }

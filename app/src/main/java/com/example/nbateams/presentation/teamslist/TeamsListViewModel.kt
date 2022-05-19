@@ -17,20 +17,28 @@ internal class TeamsListViewModel(
 ) : ViewModel() {
 
     var teamsListResult = MutableLiveData<TeamsList>()
-    var isLoading: Boolean = false
+    var isLoading = MutableLiveData<Boolean>()
+    var isError = MutableLiveData<Boolean>()
 
     init {
         getTeamsList()
     }
 
-    private fun getTeamsList() {
+    fun getTeamsList() {
         viewModelScope.launch {
             getTeamsListUseCase()
                 .flowOn(dispatcher)
-                .onStart { isLoading = true }
-                .catch { handleError(it) }
-                .onCompletion { isLoading = false }
-                .collect { teamsListResult.value = it }
+                .onStart { isLoading.value = true }
+                .catch {
+                    isLoading.value = false
+                    isError.value = true
+                    handleError(it)
+                }
+                .collect {
+                    isLoading.value = false
+                    teamsListResult.value = it
+                    isError.value = it.teams.isEmpty()
+                }
         }
     }
 

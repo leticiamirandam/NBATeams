@@ -6,13 +6,15 @@
         <entry key="app/src/main/res/drawable/ic_back_button.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_back_top.xml" value="0.173" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
+        <entry key="app/src/main/res/layout/error_dialog.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/player_detail_fragment.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/player_item.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/players_list_fragment.xml" value="0.28182830810546877" />
         <entry key="app/src/main/res/layout/team_detail_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/team_item.xml" value="0.26927083333333335" />
-        <entry key="app/src/main/res/layout/teams_list_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/teams_list_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/theme_menu.xml" value="0.33177083333333335" />
       </map>
     </option>
   </component>

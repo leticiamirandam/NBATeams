@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayersListFragmentBinding
 import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.presentation.playerslist.adapter.PlayersListAdapter
+import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
@@ -34,6 +37,8 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
         }
         binding.recyclerViewPlayers.adapter = adapter
         setupPlayersListObserver()
+        setupLoadingObserver()
+        setupErrorObserver()
         setupFabBackToTop()
     }
 
@@ -53,6 +58,22 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
     private fun setupFabBackToTop() {
         binding.fabBackTop.setOnClickListener {
             binding.recyclerViewPlayers.smoothScrollToPosition(0)
+        }
+    }
+
+    private fun setupLoadingObserver() {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.loadingProgress.isVisible = it
+        }
+    }
+
+    private fun setupErrorObserver() {
+        viewModel.isError.observe(viewLifecycleOwner) {
+            binding.errorDialog.root.isVisible = it
+            binding.errorDialog.root.buttonTryAgain.setOnClickListener {
+                viewModel.isError.value = false
+                viewModel.getPlayersList()
+            }
         }
     }
 }

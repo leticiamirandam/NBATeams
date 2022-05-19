@@ -1,5 +1,6 @@
 package com.example.nbateams.presentation.playerslist
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,8 +10,10 @@ import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 internal class PlayersListViewModel(
@@ -19,27 +22,33 @@ internal class PlayersListViewModel(
 ) : ViewModel() {
 
     val playersList = MutableLiveData<PagingData<PlayersList.Player>>()
+    var isLoading = MutableLiveData<Boolean>()
+    var isError = MutableLiveData<Boolean>()
 
     init {
         getPlayersList()
     }
 
-    private fun getPlayersList() {
+    fun getPlayersList() {
         viewModelScope.launch {
             playersListUseCase.invoke()
                 .flowOn(dispatcher)
+                .onStart { isLoading.value = true }
+                .catch {
+                    isLoading.value = false
+                    isError.value = true
+                    handleError(it)
+                }
                 .cachedIn(viewModelScope)
                 .collectLatest {
-                    handleSuccess(it)
+                    isLoading.value = false
+                    isError.value = false
+                    playersList.value = it
                 }
         }
     }
 
-    private fun handleSuccess(players: PagingData<PlayersList.Player>) {
-        playersList.value = players
-    }
-
-    private fun handleError() {
-        //it will be implemented
+    private fun handleError(throwable: Throwable) {
+        Log.i("ERRO: ", throwable.localizedMessage)
     }
 }

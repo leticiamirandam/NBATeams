@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayerDetailFragmentBinding
+import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -33,6 +35,8 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
             activity?.onBackPressed()
         }
         setupPlayerDetailObserver()
+        setupLoadingObserver()
+        setupErrorObserver()
     }
 
     override fun onCreateView(
@@ -46,11 +50,29 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
     private fun setupPlayerDetailObserver() {
         viewModel.playerDetail.observe(viewLifecycleOwner) {
             with(binding) {
+                detailCard.isVisible = true
                 playerName.text = "${it.firstName} ${it.lastName}"
                 playerTeam.text = it.team.fullName
                 playerHeight.text = "${it.heightFeet}${getString(R.string.height_measure_unit)}"
                 playerWeight.text = "${it.weightPounds}${getString(R.string.weight_measure_unit)}"
                 playerPosition.text = it.position
+            }
+        }
+    }
+
+    private fun setupLoadingObserver(){
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.loadingProgress.isVisible = it
+        }
+    }
+
+    private fun setupErrorObserver(){
+        viewModel.isError.observe(viewLifecycleOwner) {
+            binding.errorDialog.root.isVisible = it
+            binding.detailCard.isVisible = !it
+            binding.errorDialog.root.buttonTryAgain.setOnClickListener {
+                viewModel.isError.value = false
+                viewModel.getPlayerDetail()
             }
         }
     }
