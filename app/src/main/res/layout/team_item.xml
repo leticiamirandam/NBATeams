@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/medium_margin"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/title_medium"
-            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,10 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginVertical="@dimen/medium_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/teamAbbreviation"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/text_color"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/teamAbbreviation"
             tool:text="Full name: Los Angeles Lakers" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.nbateams.presentation.teamslist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +28,6 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     private val viewModel: TeamsListViewModel by viewModel()
     private lateinit var binding: TeamsListFragmentBinding
     private lateinit var adapter: TeamsListAdapter
-    private lateinit var teamsDao: TeamDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,14 +62,24 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     private fun changeAppTheme() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.theme_menu))
-        val styles = arrayOf("Light", "Dark", "System default")
-        val checkedItem = 0
+        val styles = arrayOf(
+            getString(R.string.light_theme_description),
+            getString(R.string.dark_theme_description),
+            getString(
+                R.string.system_theme_description
+            )
+        )
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val checkedItem = sharedPreferences.getInt(getString(R.string.checkbox_selected), 0)
 
         builder.setSingleChoiceItems(styles, checkedItem) { dialog, selectedTheme ->
             when (selectedTheme) {
-                LIGHT_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_NO)
-                DARK_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_YES)
-                FOLLOW_SYSTEM_THEME -> applySelectedTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                LIGHT_THEME -> saveSelectedTheme(LIGHT_THEME, AppCompatDelegate.MODE_NIGHT_NO)
+                DARK_THEME -> saveSelectedTheme(DARK_THEME, AppCompatDelegate.MODE_NIGHT_YES)
+                FOLLOW_SYSTEM_THEME -> saveSelectedTheme(
+                    FOLLOW_SYSTEM_THEME,
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                )
             }
             dialog.dismiss()
         }
@@ -77,7 +87,13 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         dialog.show()
     }
 
-    private fun applySelectedTheme(selectedTheme: Int) {
+    private fun saveSelectedTheme(checkBoxItem: Int, selectedTheme: Int) {
+        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putInt(getString(R.string.checkbox_selected), checkBoxItem)
+            putInt(getString(R.string.theme_selected), selectedTheme)
+            apply()
+        }
         AppCompatDelegate.setDefaultNightMode(selectedTheme)
         (activity as AppCompatActivity).delegate.applyDayNight()
     }

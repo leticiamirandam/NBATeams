@@ -4,6 +4,13 @@
     <color name="orange_500">#E47041</color>
     <color name="orange_700">#B54213</color>
     <color name="transparent_orange_700">#80B54213</color>
+    <color name="text_color">#FF000000</color>
     <color name="black">#FF000000</color>
+    <color name="transparent_black">#80000000</color>
+    <color name="transparent_white">#80FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="menu_item_color">@color/black</color>
+    <color name="default_background_color">@color/transparent_orange_700</color>
+    <color name="bottom_navigation_buton_state_pressed">@color/white</color>
+    <color name="bottom_navigation_buton_state_checked">@color/transparent_white</color>
 </resources>

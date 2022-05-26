@@ -18,4 +18,9 @@
     <string name="button_try_again">Try again</string>
     <string name="button_cancel">Cancel</string>
     <string name="theme_menu">Change theme</string>
+    <string name="theme_selected">selected_theme</string>
+    <string name="checkbox_selected">selected_checkbox</string>
+    <string name="light_theme_description">Light</string>
+    <string name="dark_theme_description">Dark</string>
+    <string name="system_theme_description">System default</string>
 </resources>

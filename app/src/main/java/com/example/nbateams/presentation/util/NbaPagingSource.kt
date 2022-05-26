@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.nbateams.data.api.NBAService
 import com.example.nbateams.data.model.response.PlayersDetailResponse
-import com.example.nbateams.data.model.response.PlayersListResponse
 import retrofit2.HttpException
 import java.io.IOException
 

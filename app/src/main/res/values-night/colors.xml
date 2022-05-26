@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <color name="orange_200">#CA5622</color>
+    <color name="orange_500">#D34912</color>
+    <color name="orange_700">#B53907</color>
+    <color name="transparent_orange_700">#80B53907</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent_black">#80000000</color>
+    <color name="transparent_white">#80FFFFFF</color>
+    <color name="text_color">@color/white</color>
+    <color name="default_background_color">@color/black</color>
+    <color name="menu_item_color">@color/white</color>
+    <color name="bottom_navigation_buton_state_pressed">@color/black</color>
+    <color name="bottom_navigation_buton_state_checked">@color/transparent_black</color>
+</resources>
