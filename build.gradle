@@ -14,6 +14,11 @@ buildscript {
         paging_version = '3.0.0'
         picasso_version = '2.71828'
         room_version = '2.4.1'
+        junit_version = "4.13.2"
+        mockk_version = "1.12.4"
+        turbine_version = "0.5.2"
+        mockito_kotlin_version = "4.0.0"
+        kotlin_test_version = "1.5.21"
     }
     repositories {
         google()

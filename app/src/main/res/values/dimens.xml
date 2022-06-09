@@ -6,5 +6,6 @@
     <dimen name="medium_margin">8dp</dimen>
     <dimen name="large_margin">16dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="round_card_corner_radius">16dp</dimen>
     <dimen name="error_dialog_width">300dp</dimen>
 </resources>

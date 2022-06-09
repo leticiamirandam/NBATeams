@@ -10,7 +10,7 @@
     <color name="transparent_white">#80FFFFFF</color>
     <color name="text_color">@color/white</color>
     <color name="default_background_color">@color/black</color>
-    <color name="menu_item_color">@color/white</color>
+    <color name="menu_item_color">@color/black</color>
     <color name="bottom_navigation_buton_state_pressed">@color/black</color>
     <color name="bottom_navigation_buton_state_checked">@color/transparent_black</color>
 </resources>

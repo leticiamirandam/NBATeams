@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.nbateams.R
@@ -35,8 +36,16 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+        with(binding.toolbar) {
+            setNavigationOnClickListener {
+                activity?.onBackPressed()
+            }
+            setNavigationIconTint(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.menu_item_color
+                )
+            )
         }
         Picasso.get()
             .load(teamPicture)
@@ -69,13 +78,13 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
         }
     }
 
-    private fun setupLoadingObserver(){
+    private fun setupLoadingObserver() {
         viewModel.isLoading.observe(viewLifecycleOwner) {
             binding.loadingProgress.isVisible = it
         }
     }
 
-    private fun setupErrorObserver(){
+    private fun setupErrorObserver() {
         viewModel.isError.observe(viewLifecycleOwner) {
             binding.errorDialog.root.isVisible = it
             binding.detailCard.isVisible = !it

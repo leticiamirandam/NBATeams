@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -48,14 +49,20 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         setupTeamListObserver()
         setupLoadingObserver()
         setupErrorObserver()
+        applySelectedTheme()
     }
 
     private fun setupToolbar() {
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.themeMenu -> changeAppTheme()
+        with(binding.toolbar) {
+            menu.findItem(R.id.themeMenu).apply {
+                icon.setTint(ContextCompat.getColor(requireContext(), R.color.menu_item_color))
             }
-            true
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.themeMenu -> changeAppTheme()
+                }
+                true
+            }
         }
     }
 
@@ -94,7 +101,12 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
             putInt(getString(R.string.theme_selected), selectedTheme)
             apply()
         }
-        AppCompatDelegate.setDefaultNightMode(selectedTheme)
+        applySelectedTheme()
+    }
+
+    private fun applySelectedTheme(){
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        AppCompatDelegate.setDefaultNightMode(sharedPreferences.getInt(getString(R.string.theme_selected), 0))
         (activity as AppCompatActivity).delegate.applyDayNight()
     }
 

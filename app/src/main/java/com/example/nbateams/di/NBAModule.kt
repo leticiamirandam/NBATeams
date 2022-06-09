@@ -100,7 +100,7 @@ val dataModule = module {
     }
     factory<PlayerDetailRepository> { PlayerDetailRepositoryImpl(get(), PlayerMapper()) }
     factory<TeamDetailRepository> {
-        TeamDetailRepositoryImpl(get(), get(), TeamMapper(), CacheToDomainMapper())
+        TeamDetailRepositoryImpl(get(), CacheToDomainMapper())
     }
 }
 

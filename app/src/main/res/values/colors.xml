@@ -9,7 +9,7 @@
     <color name="transparent_black">#80000000</color>
     <color name="transparent_white">#80FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="menu_item_color">@color/black</color>
+    <color name="menu_item_color">@color/white</color>
     <color name="default_background_color">@color/transparent_orange_700</color>
     <color name="bottom_navigation_buton_state_pressed">@color/white</color>
     <color name="bottom_navigation_buton_state_checked">@color/transparent_white</color>
