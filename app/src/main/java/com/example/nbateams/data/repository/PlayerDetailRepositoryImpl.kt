@@ -1,6 +1,6 @@
 package com.example.nbateams.data.repository
 
-import com.example.nbateams.data.datasource.PlayerDetailRemoteDataSource
+import com.example.nbateams.data.datasource.playerdetail.PlayerDetailRemoteDataSource
 import com.example.nbateams.data.mapper.PlayerMapper
 import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.domain.repository.PlayerDetailRepository

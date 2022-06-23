@@ -1,4 +1,4 @@
-package com.example.nbateams.data.datasource
+package com.example.nbateams.data.datasource.teamslist
 
 import com.example.nbateams.data.api.NBAService
 import com.example.nbateams.data.api.PictureService

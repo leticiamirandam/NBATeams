@@ -1,7 +1,7 @@
 package com.example.nbateams.data.repository
 
 import androidx.paging.PagingData
-import com.example.nbateams.data.datasource.PlayersListRemoteDataSource
+import com.example.nbateams.data.datasource.playerslist.PlayersListRemoteDataSource
 import com.example.nbateams.data.mapper.PlayerMapper
 import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.domain.repository.PlayersListRepository

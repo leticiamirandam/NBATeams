@@ -1,4 +1,4 @@
-package com.example.nbateams.data.datasource
+package com.example.nbateams.data.datasource.teamdetail
 
 import com.example.nbateams.data.model.response.TeamDetailResponse
 import kotlinx.coroutines.flow.Flow

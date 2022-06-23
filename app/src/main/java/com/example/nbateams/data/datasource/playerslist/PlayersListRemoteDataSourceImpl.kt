@@ -1,4 +1,4 @@
-package com.example.nbateams.data.datasource
+package com.example.nbateams.data.datasource.playerslist
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

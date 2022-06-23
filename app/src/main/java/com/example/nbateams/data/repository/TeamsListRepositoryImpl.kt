@@ -1,11 +1,9 @@
 package com.example.nbateams.data.repository
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.example.nbateams.data.cache.mapper.CacheToDomainMapper
 import com.example.nbateams.data.cache.mapper.RemoteToCacheMapper
 import com.example.nbateams.data.cache.room.TeamDao
-import com.example.nbateams.data.datasource.TeamsListRemoteDataSource
+import com.example.nbateams.data.datasource.teamslist.TeamsListRemoteDataSource
 import com.example.nbateams.data.model.response.TeamPictureResponse
 import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.domain.repository.TeamsListRepository

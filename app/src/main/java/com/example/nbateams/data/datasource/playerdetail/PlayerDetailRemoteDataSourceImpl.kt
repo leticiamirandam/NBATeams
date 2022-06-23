@@ -1,4 +1,4 @@
-package com.example.nbateams.data.datasource
+package com.example.nbateams.data.datasource.playerdetail
 
 import com.example.nbateams.data.api.NBAService
 import com.example.nbateams.data.model.response.PlayersDetailResponse
@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 internal class PlayerDetailRemoteDataSourceImpl(
     private val nbaService: NBAService
-): PlayerDetailRemoteDataSource{
+): PlayerDetailRemoteDataSource {
     override fun getPlayerDetail(id: Int): Flow<PlayersDetailResponse> = flow {
         emit(nbaService.getPlayerDetail(id))
     }

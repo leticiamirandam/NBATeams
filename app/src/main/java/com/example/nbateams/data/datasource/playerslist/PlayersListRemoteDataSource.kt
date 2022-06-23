@@ -1,4 +1,4 @@
-package com.example.nbateams.data.datasource
+package com.example.nbateams.data.datasource.playerslist
 
 import androidx.paging.PagingData
 import com.example.nbateams.data.model.response.PlayersDetailResponse

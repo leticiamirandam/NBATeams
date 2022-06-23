@@ -1,8 +1,8 @@
 package com.example.nbateams.data.mapper.cache
 
 import com.example.nbateams.data.cache.mapper.CacheToDomainMapper
-import com.example.nbateams.stubs.stubTeamCM
-import com.example.nbateams.stubs.stubTeamsList
+import com.example.nbateams.stubs.stubTeamListCM
+import com.example.nbateams.stubs.stubTeamsListWithPicture
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -13,8 +13,8 @@ class CacheToDomainMapperTest {
     @Test
     fun `map Should convert list of TeamCM to TeamsList`() {
         //Given
-        val teamsList = stubTeamsList
-        val teamsCM = listOf(stubTeamCM)
+        val teamsList = stubTeamsListWithPicture
+        val teamsCM = stubTeamListCM
 
         //When
         val result = mapper.mapTeamsListToCM(teamsCM)

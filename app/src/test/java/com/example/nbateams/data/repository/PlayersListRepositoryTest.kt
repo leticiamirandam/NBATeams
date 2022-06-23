@@ -1,12 +1,10 @@
 package com.example.nbateams.data.repository
 
-import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.example.nbateams.data.datasource.PlayersListRemoteDataSource
+import com.example.nbateams.data.datasource.playerslist.PlayersListRemoteDataSource
 import com.example.nbateams.data.mapper.PlayerMapper
-import com.example.nbateams.stubs.stubPlayerDetail
-import com.example.nbateams.stubs.stubPlayersList
-import com.example.nbateams.stubs.stubPlayersListResponse
+import com.example.nbateams.stubs.stubPlayersListPagingData
+import com.example.nbateams.stubs.stubPlayersListPagingDataResponse
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -27,20 +25,18 @@ class PlayersListRepositoryTest {
 
     @Test
     fun `getPlayersList Should return PlayersList When service returns`() = runBlocking {
-//        //Given
-//        val playerListResponse = stubPlayersListResponse
-//        val playerList = stubPlayersList
-//        every { playersListRemoteDataSource.getPlayersList() } returns flowOf(
-//            PagingData.from(data = stubPlayersListResponse)
-//        )
-//
-//        //When
-//        val result = playersListRepository.getPlayersList()
-//
-//        //Then
-//        result.test {
-//            assertEquals(playerList, expectItem())
-//            expectComplete()
-//        }
+        //Given
+        val playerListResponse = stubPlayersListPagingDataResponse
+        val playerList = stubPlayersListPagingData
+        every { playersListRemoteDataSource.getPlayersList() } returns flowOf(playerListResponse)
+
+        //When
+        val result = playersListRepository.getPlayersList()
+
+        //Then
+        result.test {
+            assertEquals(playerList, expectItem())
+            expectComplete()
+        }
     }
 }

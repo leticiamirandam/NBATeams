@@ -1,7 +1,7 @@
 package com.example.nbateams.data.repository
 
 import app.cash.turbine.test
-import com.example.nbateams.data.datasource.PlayerDetailRemoteDataSource
+import com.example.nbateams.data.datasource.playerdetail.PlayerDetailRemoteDataSource
 import com.example.nbateams.data.mapper.PlayerMapper
 import com.example.nbateams.stubs.stubPlayerDetail
 import com.example.nbateams.stubs.stubPlayerDetailResponse

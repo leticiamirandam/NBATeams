@@ -4,11 +4,10 @@ import app.cash.turbine.test
 import com.example.nbateams.data.cache.mapper.CacheToDomainMapper
 import com.example.nbateams.data.cache.mapper.RemoteToCacheMapper
 import com.example.nbateams.data.cache.room.TeamDao
-import com.example.nbateams.data.datasource.TeamsListRemoteDataSource
+import com.example.nbateams.data.datasource.teamslist.TeamsListRemoteDataSource
 import com.example.nbateams.stubs.stubPicturesListResponse
 import com.example.nbateams.stubs.stubTeamsList
 import com.example.nbateams.stubs.stubTeamsListResponse
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow

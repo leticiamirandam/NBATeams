@@ -1,10 +1,8 @@
 package com.example.nbateams.data.mapper.cache
 
 import com.example.nbateams.data.cache.mapper.RemoteToCacheMapper
-import com.example.nbateams.data.model.response.TeamDetailResponse
-import com.example.nbateams.stubs.stubTeamDetail
+import com.example.nbateams.stubs.stubTeamListCM
 import com.example.nbateams.stubs.stubTeamPictureResponse
-import com.example.nbateams.stubs.stubTeamsList
 import com.example.nbateams.stubs.stubTeamsListResponse
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -18,12 +16,12 @@ class RemoteToCacheMapperTest {
         //Given
         val teamsListResponse = stubTeamsListResponse
         val picturesList = stubTeamPictureResponse
-        val teamsList = listOf(stubTeamDetail)
+        val teamsListCM = stubTeamListCM
 
         //When
         val result = mapper.mapTeamsListResponseToCM(teamsListResponse, picturesList)
 
         //Then
-        //assertEquals(result, teamsList)
+        assertEquals(result, teamsListCM)
     }
 }

@@ -17,7 +17,7 @@ internal val stubPicturesListResponse =
 
 internal val stubTeamPictureResponse = listOf(
     TeamPictureResponse(
-        id = "1",
+        id = "14",
         picture = "https://upload.wikimedia.org/wikipedia/pt/9/9a/Atlanta_Hawks.png"
     )
 )
