@@ -19,7 +19,7 @@ buildscript {
         turbine_version = "0.5.2"
         mockito_kotlin_version = "4.0.0"
         kotlin_test_version = "1.5.21"
-        core_testing_version = "1.0.0"
+        core_testing_version = "2.1.0"
         coroutines_test_version = "1.6.2"
     }
     repositories {
