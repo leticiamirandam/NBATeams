@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.nbateams.data.model.response.PlayersDetailResponse
 import com.example.nbateams.data.model.response.PlayersListResponse
 import com.example.nbateams.domain.model.PlayersList
+import org.mockito.kotlin.stub
 
 internal val stubPlayerDetail =
     PlayersList.Player(
@@ -42,6 +43,11 @@ internal val stubPlayersListResponse =
 internal val stubPlayersListPagingData = PagingData.from(
     listOf(stubPlayerDetail)
 )
+
+internal val stubPlayersPagingData = PagingData.from(
+    arrayListOf(stubPlayerDetail)
+)
+
 
 internal val stubPlayersListPagingDataResponse = PagingData.from(
     listOf(stubPlayerDetailResponse)

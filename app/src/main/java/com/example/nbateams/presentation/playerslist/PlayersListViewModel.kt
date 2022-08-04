@@ -11,7 +11,6 @@ import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ internal class PlayersListViewModel(
 
     fun getPlayersList() {
         viewModelScope.launch {
-            playersListUseCase.invoke()
+            playersListUseCase()
                 .flowOn(dispatcher)
                 .onStart { isLoading.value = true }
                 .catch {
@@ -40,7 +39,7 @@ internal class PlayersListViewModel(
                     handleError(it)
                 }
                 .cachedIn(viewModelScope)
-                .collectLatest {
+                .collect {
                     isLoading.value = false
                     isError.value = false
                     playersList.value = it

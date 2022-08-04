@@ -7,12 +7,12 @@ import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import com.example.nbateams.presentation.playerslist.PlayersListViewModel
 import com.example.nbateams.stubs.stubPlayersListPagingData
+import com.example.nbateams.stubs.stubPlayersPagingData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -20,7 +20,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
@@ -59,9 +58,8 @@ class PlayersListViewModelTest {
     @Test
     fun `getPlayersList should return PlayersList`() {
         //Given
-        reset(playersListObserver)
-        val playersList = stubPlayersListPagingData
-        every { getPlayersListUseCase.invoke() } returns flow { emit(playersList) }
+        val playersList = stubPlayersPagingData
+        every { getPlayersListUseCase() } returns flow { emit(playersList) }
 
         //When
         playersListViewModel.getPlayersList()
@@ -81,6 +79,6 @@ class PlayersListViewModelTest {
         playersListViewModel.getPlayersList()
 
         //Then
-        Mockito.verify(errorObserver).onChanged(true)
+        verify(errorObserver).onChanged(true)
     }
 }

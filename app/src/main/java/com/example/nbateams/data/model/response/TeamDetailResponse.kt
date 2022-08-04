@@ -20,4 +20,4 @@ data class TeamDetailResponse(
     val fullName: String,
     @SerializedName("name")
     val name: String
-): Parcelable
+) : Parcelable

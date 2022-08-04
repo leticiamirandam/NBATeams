@@ -1,23 +1,29 @@
 package com.example.nbateams.presentation.teamslist
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.nbateams.R
-import com.example.nbateams.data.cache.room.TeamDao
-import com.example.nbateams.databinding.TeamsListFragmentBinding
 import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.presentation.teamslist.adapter.TeamsListAdapter
-import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val LIGHT_THEME = 0
@@ -27,16 +33,17 @@ private const val FOLLOW_SYSTEM_THEME = 2
 class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
 
     private val viewModel: TeamsListViewModel by viewModel()
-    private lateinit var binding: TeamsListFragmentBinding
     private lateinit var adapter: TeamsListAdapter
+    private lateinit var composeView: ComposeView
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = TeamsListFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+        composeView = ComposeView(requireContext()).apply {
+            setBackgroundColor(resources.getColor(R.color.default_background_color))
+        }
+        return composeView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,16 +51,15 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         adapter = TeamsListAdapter {
             onTeamItemClick(it)
         }
-        binding.recyclerViewTeams.adapter = adapter
+        // binding.recyclerViewTeams.adapter = adapter
         setupToolbar()
         setupTeamListObserver()
-        setupLoadingObserver()
         setupErrorObserver()
         applySelectedTheme()
     }
 
     private fun setupToolbar() {
-        with(binding.toolbar) {
+        /*with(binding.toolbar) {
             menu.findItem(R.id.themeMenu).apply {
                 icon.setTint(ContextCompat.getColor(requireContext(), R.color.menu_item_color))
             }
@@ -63,7 +69,7 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
                 }
                 true
             }
-        }
+        }*/
     }
 
     private fun changeAppTheme() {
@@ -104,9 +110,14 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         applySelectedTheme()
     }
 
-    private fun applySelectedTheme(){
+    private fun applySelectedTheme() {
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        AppCompatDelegate.setDefaultNightMode(sharedPreferences.getInt(getString(R.string.theme_selected), 0))
+        AppCompatDelegate.setDefaultNightMode(
+            sharedPreferences.getInt(
+                getString(R.string.theme_selected),
+                0
+            )
+        )
         (activity as AppCompatActivity).delegate.applyDayNight()
     }
 
@@ -119,24 +130,45 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     }
 
     private fun setupTeamListObserver() {
-        viewModel.teamsListResult.observe(viewLifecycleOwner) {
-            adapter.teamsList = it.teams
-        }
-    }
-
-    private fun setupLoadingObserver() {
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.loadingProgress.isVisible = it
+        viewModel.teamsListState.observe(viewLifecycleOwner) {
+            composeView.apply {
+                setContent {
+                    TeamsFragmentLayout(
+                        getTeamsList = it.teamsList,
+                        isLoading = it.isLoading
+                    )
+                }
+            }
         }
     }
 
     private fun setupErrorObserver() {
         viewModel.isError.observe(viewLifecycleOwner) {
-            binding.errorDialog.root.isVisible = it
+            /* binding.errorDialog.root.isVisible = it
             binding.errorDialog.root.buttonTryAgain.setOnClickListener {
                 viewModel.isError.value = false
                 viewModel.getTeamsList()
+            } */
+        }
+    }
+
+    @Composable
+    fun TeamsFragmentLayout(
+        getTeamsList: MutableList<TeamsList.Team>,
+        isLoading: Boolean
+    ) {
+        if (isLoading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    color = Color(resources.getColor(R.color.orange_500))
+                )
             }
+        } else {
+            TeamsListContent(teams = getTeamsList)
         }
     }
 }
+

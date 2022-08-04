@@ -16,8 +16,7 @@ internal class TeamsListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    var teamsListResult = MutableLiveData<TeamsList>()
-    var isLoading = MutableLiveData<Boolean>()
+    var teamsListState = MutableLiveData<TeamListState>()
     var isError = MutableLiveData<Boolean>()
 
     init {
@@ -28,15 +27,23 @@ internal class TeamsListViewModel(
         viewModelScope.launch {
             getTeamsListUseCase()
                 .flowOn(dispatcher)
-                .onStart { isLoading.value = true }
+                .onStart {
+                    teamsListState.value = TeamListState(
+                        isLoading = true
+                    )
+                }
                 .catch {
-                    isLoading.value = false
+                    teamsListState.value = TeamListState(
+                        isLoading = false
+                    )
                     isError.value = true
                     handleError(it)
                 }
                 .collect {
-                    isLoading.value = false
-                    teamsListResult.value = it
+                    teamsListState.value = TeamListState(
+                        isLoading = false,
+                        teamsList = it.teams.toMutableList()
+                    )
                     isError.value = it.teams.isEmpty()
                 }
         }

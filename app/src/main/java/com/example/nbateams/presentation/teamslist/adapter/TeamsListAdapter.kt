@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbateams.R
+import com.example.nbateams.databinding.TeamItemBinding
 import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.presentation.teamslist.adapter.viewholder.TeamsListViewHolder
 
@@ -25,9 +26,9 @@ internal class TeamsListAdapter(
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamsListViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.team_item, parent, false)
-        return TeamsListViewHolder(view, listener)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = TeamItemBinding.inflate(inflater)
+        return TeamsListViewHolder(binding, parent.context, listener)
     }
 
     override fun onBindViewHolder(holder: TeamsListViewHolder, position: Int) {

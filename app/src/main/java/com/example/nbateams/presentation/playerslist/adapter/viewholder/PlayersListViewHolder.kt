@@ -1,21 +1,22 @@
 package com.example.nbateams.presentation.playerslist.adapter.viewholder
 
-import android.view.View
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbateams.R
+import com.example.nbateams.databinding.PlayerItemBinding
 import com.example.nbateams.domain.model.PlayersList
-import kotlinx.android.synthetic.main.player_item.view.*
 
 class PlayersListViewHolder(
-    itemView: View,
+    private val binding: PlayerItemBinding,
+    private val context: Context,
     private val listener: (PlayersList.Player) -> Unit
-) : RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(player: PlayersList.Player) {
-        with(itemView) {
+        with(binding) {
             playerName.text = "${player.firstName} ${player.lastName}"
             playerPosition.text = context.getString(R.string.position) + player.position
-            setOnClickListener {
+            binding.root.setOnClickListener {
                 listener.invoke(player)
             }
         }

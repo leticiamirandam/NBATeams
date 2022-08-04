@@ -13,7 +13,6 @@ import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayersListFragmentBinding
 import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.presentation.playerslist.adapter.PlayersListAdapter
-import kotlinx.android.synthetic.main.error_dialog.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
@@ -81,7 +80,7 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
     private fun setupErrorObserver() {
         viewModel.isError.observe(viewLifecycleOwner) {
             binding.errorDialog.root.isVisible = it
-            binding.errorDialog.root.buttonTryAgain.setOnClickListener {
+            binding.errorDialog.buttonTryAgain.setOnClickListener {
                 viewModel.isError.value = false
                 viewModel.getPlayersList()
             }
