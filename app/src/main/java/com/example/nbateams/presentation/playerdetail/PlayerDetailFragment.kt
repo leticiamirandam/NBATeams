@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayerDetailFragmentBinding
+import com.example.nbateams.domain.model.PlayersList
+import com.example.nbateams.presentation.common.LoadingScreenContent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -21,6 +25,15 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
     }
     private lateinit var binding: PlayerDetailFragmentBinding
     private var playerId: Int? = null
+    private lateinit var composeView: ComposeView
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        composeView = ComposeView(requireContext())
+        return composeView
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,50 +44,23 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.toolbar) {
-            setNavigationOnClickListener {
-                activity?.onBackPressed()
-            }
-            setNavigationIconTint(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.menu_item_color
-                )
-            )
-        }
         setupPlayerDetailObserver()
-        setupLoadingObserver()
-        setupErrorObserver()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = PlayerDetailFragmentBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     private fun setupPlayerDetailObserver() {
-        viewModel.playerDetail.observe(viewLifecycleOwner) {
-            with(binding) {
-                detailCard.isVisible = true
-                playerName.text = "${it.firstName} ${it.lastName}"
-                playerTeam.text = it.team.fullName
-                playerHeight.text = "${it.heightFeet}${getString(R.string.height_measure_unit)}"
-                playerWeight.text = "${it.weightPounds}${getString(R.string.weight_measure_unit)}"
-                playerPosition.text = it.position
+        viewModel.playerDetailState.observe(viewLifecycleOwner) {
+            composeView.apply {
+                setContent {
+                    PlayerDetailLayout(
+                        player = it.player,
+                        isLoading = it.isLoading,
+                        backButtonListener = { activity?.onBackPressed() })
+                }
             }
         }
     }
 
-    private fun setupLoadingObserver(){
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.loadingProgress.isVisible = it
-        }
-    }
-
-    private fun setupErrorObserver(){
+    private fun setupErrorObserver() {
         viewModel.isError.observe(viewLifecycleOwner) {
             binding.errorDialog.root.isVisible = it
             binding.detailCard.isVisible = !it
@@ -82,6 +68,22 @@ class PlayerDetailFragment : Fragment(R.layout.player_detail_fragment) {
                 viewModel.isError.value = false
                 viewModel.getPlayerDetail()
             }
+        }
+    }
+
+    @Composable
+    fun PlayerDetailLayout(
+        player: MutableLiveData<PlayersList.Player>,
+        isLoading: Boolean,
+        backButtonListener: () -> Unit
+    ) {
+        if (isLoading) {
+            LoadingScreenContent()
+        } else {
+            PlayerDetailContent(
+                player = player,
+                backButtonClick = backButtonListener
+            )
         }
     }
 }

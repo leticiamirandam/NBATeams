@@ -4,42 +4,42 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbateams.R
 import com.example.nbateams.databinding.PlayersListFragmentBinding
 import com.example.nbateams.domain.model.PlayersList
-import com.example.nbateams.presentation.playerslist.adapter.PlayersListAdapter
+import com.example.nbateams.presentation.common.LoadingScreenContent
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
 
     private val viewModel: PlayersListViewModel by viewModel()
     private lateinit var binding: PlayersListFragmentBinding
-    private lateinit var adapter: PlayersListAdapter
+    private lateinit var composeView: ComposeView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = PlayersListFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+        composeView = ComposeView(requireContext())
+        return composeView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlayersListAdapter {
-            onPlayerItemClick(it)
-        }
-        binding.recyclerViewPlayers.adapter = adapter
         setupPlayersListObserver()
-        setupLoadingObserver()
-        setupErrorObserver()
-        setupFabBackToTop()
+        //setupErrorObserver()
+        //setupFabBackToTop()
     }
 
     private fun onPlayerItemClick(player: PlayersList.Player) {
@@ -50,8 +50,16 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
     }
 
     private fun setupPlayersListObserver() {
-        viewModel.playersList.observe(viewLifecycleOwner) {
-            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        viewModel.playersListState.observe(viewLifecycleOwner) {
+            composeView.apply {
+                setContent {
+                    PlayersFragmentLayout(
+                        playersList = flowOf(it.players),
+                        isLoading = it.isLoading,
+                        listener = { onPlayerItemClick(it) }
+                    )
+                }
+            }
         }
     }
 
@@ -71,12 +79,6 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
         }
     }
 
-    private fun setupLoadingObserver() {
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.loadingProgress.isVisible = it
-        }
-    }
-
     private fun setupErrorObserver() {
         viewModel.isError.observe(viewLifecycleOwner) {
             binding.errorDialog.root.isVisible = it
@@ -84,6 +86,22 @@ class PlayersListFragment : Fragment(R.layout.players_list_fragment) {
                 viewModel.isError.value = false
                 viewModel.getPlayersList()
             }
+        }
+    }
+
+    @Composable
+    fun PlayersFragmentLayout(
+        playersList: Flow<PagingData<PlayersList.Player>>,
+        isLoading: Boolean,
+        listener: (PlayersList.Player) -> Unit,
+    ) {
+        if (isLoading) {
+            LoadingScreenContent()
+        } else {
+            PlayersListContent(
+                players = playersList,
+                navigateToDetail = listener
+            )
         }
     }
 }

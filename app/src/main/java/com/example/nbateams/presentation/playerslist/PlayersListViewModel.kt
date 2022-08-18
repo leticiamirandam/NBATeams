@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.nbateams.domain.model.PlayersList
 import com.example.nbateams.domain.usecase.GetPlayersListUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +19,7 @@ internal class PlayersListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    val playersList = MutableLiveData<PagingData<PlayersList.Player>>()
-    var isLoading = MutableLiveData<Boolean>()
+    val playersListState = MutableLiveData<PlayersListState>()
     var isError = MutableLiveData<Boolean>()
 
     init {
@@ -32,17 +30,20 @@ internal class PlayersListViewModel(
         viewModelScope.launch {
             playersListUseCase()
                 .flowOn(dispatcher)
-                .onStart { isLoading.value = true }
+                .onStart {
+                    playersListState.value =
+                        PlayersListState(players = PagingData.empty(), isLoading = true)
+                }
                 .catch {
-                    isLoading.value = false
+                    playersListState.value =
+                        PlayersListState(players = PagingData.empty(), isLoading = false)
                     isError.value = true
                     handleError(it)
                 }
                 .cachedIn(viewModelScope)
                 .collect {
-                    isLoading.value = false
+                    playersListState.value = PlayersListState(players = it, isLoading = false)
                     isError.value = false
-                    playersList.value = it
                 }
         }
     }

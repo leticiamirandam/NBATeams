@@ -9,8 +9,10 @@
     <color name="transparent_black">#80000000</color>
     <color name="transparent_white">#80FFFFFF</color>
     <color name="text_color">@color/white</color>
-    <color name="default_background_color">@color/black</color>
+    <color name="toolbar_text_color">@color/black</color>
+    <color name="default_background_color">@color/transparent_black</color>
     <color name="menu_item_color">@color/black</color>
+    <color name="card_background_color">#80454242</color>
     <color name="bottom_navigation_buton_state_pressed">@color/black</color>
     <color name="bottom_navigation_buton_state_checked">@color/transparent_black</color>
 </resources>

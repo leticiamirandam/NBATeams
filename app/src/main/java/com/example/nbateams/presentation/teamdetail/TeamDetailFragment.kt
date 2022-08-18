@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.example.nbateams.R
 import com.example.nbateams.databinding.TeamDetailFragmentBinding
-import com.squareup.picasso.Picasso
+import com.example.nbateams.domain.model.TeamsList
+import com.example.nbateams.presentation.common.LoadingScreenContent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -24,6 +27,15 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
     private lateinit var binding: TeamDetailFragmentBinding
     private var teamId: Int? = null
     private var teamPicture: String? = ""
+    private lateinit var composeView: ComposeView
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        composeView = ComposeView(requireContext())
+        return composeView
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,51 +47,21 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.toolbar) {
-            setNavigationOnClickListener {
-                activity?.onBackPressed()
-            }
-            setNavigationIconTint(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.menu_item_color
-                )
-            )
-        }
-        Picasso.get()
-            .load(teamPicture)
-            .error(R.drawable.nba_logo)
-            .placeholder(R.drawable.progress_animation)
-            .into(binding.teamPicture)
         setupTeamDetailObserver()
-        setupLoadingObserver()
-        setupErrorObserver()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = TeamDetailFragmentBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     private fun setupTeamDetailObserver() {
-        viewModel.teamDetail.observe(viewLifecycleOwner) {
-            with(binding) {
-                detailCard.isVisible = true
-                teamName.text = it.fullName
-                teamCity.text = it.city
-                teamConference.text = it.conference
-                teamDivision.text = it.division
-                teamAbbreviation.text = it.abbreviation
+        viewModel.teamDetailState.observe(viewLifecycleOwner) {
+            composeView.apply {
+                setContent {
+                    TeamDetailLayout(
+                        teamImage = teamPicture,
+                        team = it.team,
+                        isLoading = it.isLoading,
+                        backButtonListener = { activity?.onBackPressed() }
+                    )
+                }
             }
-        }
-    }
-
-    private fun setupLoadingObserver() {
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.loadingProgress.isVisible = it
         }
     }
 
@@ -91,6 +73,24 @@ class TeamDetailFragment : Fragment(R.layout.team_detail_fragment) {
                 viewModel.isError.value = false
                 viewModel.getTeamDetail()
             }
+        }
+    }
+
+    @Composable
+    fun TeamDetailLayout(
+        teamImage: String?,
+        team: MutableLiveData<TeamsList.Team>,
+        isLoading: Boolean,
+        backButtonListener: () -> Unit
+    ) {
+        if (isLoading) {
+            LoadingScreenContent()
+        } else {
+            TeamDetailContent(
+                image = teamImage,
+                team = team,
+                backButtonClick = backButtonListener
+            )
         }
     }
 }

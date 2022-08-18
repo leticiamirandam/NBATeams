@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nbateams.domain.model.TeamsList
 import com.example.nbateams.domain.usecase.GetTeamDetailUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 internal class TeamDetailViewModel(
@@ -17,8 +18,7 @@ internal class TeamDetailViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    val teamDetail = MutableLiveData<TeamsList.Team>()
-    var isLoading = MutableLiveData<Boolean>()
+    var teamDetailState = MutableLiveData<TeamDetailState>()
     var isError = MutableLiveData<Boolean>()
 
     init {
@@ -29,15 +29,20 @@ internal class TeamDetailViewModel(
         viewModelScope.launch {
             getTeamDetailUseCase(teamId)
                 .flowOn(dispatcher)
-                .onStart { isLoading.value = true }
+                .onStart {
+                    teamDetailState.value = TeamDetailState(isLoading = true)
+                }
                 .catch {
+                    teamDetailState.value = TeamDetailState(isLoading = false)
                     isError.value = true
                     handleError(it)
                 }
-                .onCompletion {
-                    isLoading.value = false
+                .collect {
+                    teamDetailState.value = TeamDetailState(
+                        isLoading = false,
+                        team = MutableLiveData(it)
+                    )
                 }
-                .collect { teamDetail.value = it }
         }
     }
 

@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_back_button.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_back_top.xml" value="0.173" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.169" />
         <entry key="app/src/main/res/drawable/progress_animation.xml" value="0.2645" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
         <entry key="app/src/main/res/layout/error_dialog.xml" value="0.33177083333333335" />

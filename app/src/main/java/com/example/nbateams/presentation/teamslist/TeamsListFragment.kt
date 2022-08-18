@@ -8,21 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.nbateams.R
 import com.example.nbateams.domain.model.TeamsList
+import com.example.nbateams.presentation.common.LoadingScreenContent
 import com.example.nbateams.presentation.teamslist.adapter.TeamsListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,9 +32,7 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        composeView = ComposeView(requireContext()).apply {
-            setBackgroundColor(resources.getColor(R.color.default_background_color))
-        }
+        composeView = ComposeView(requireContext())
         return composeView
     }
 
@@ -51,25 +41,9 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
         adapter = TeamsListAdapter {
             onTeamItemClick(it)
         }
-        // binding.recyclerViewTeams.adapter = adapter
-        setupToolbar()
         setupTeamListObserver()
         setupErrorObserver()
         applySelectedTheme()
-    }
-
-    private fun setupToolbar() {
-        /*with(binding.toolbar) {
-            menu.findItem(R.id.themeMenu).apply {
-                icon.setTint(ContextCompat.getColor(requireContext(), R.color.menu_item_color))
-            }
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.themeMenu -> changeAppTheme()
-                }
-                true
-            }
-        }*/
     }
 
     private fun changeAppTheme() {
@@ -111,14 +85,13 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     }
 
     private fun applySelectedTheme() {
-        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        AppCompatDelegate.setDefaultNightMode(
-            sharedPreferences.getInt(
-                getString(R.string.theme_selected),
-                0
-            )
-        )
+        AppCompatDelegate.setDefaultNightMode(getSelectedTheme())
         (activity as AppCompatActivity).delegate.applyDayNight()
+    }
+
+    private fun getSelectedTheme(): Int {
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        return sharedPreferences.getInt(getString(R.string.theme_selected), 0)
     }
 
     private fun onTeamItemClick(team: TeamsList.Team) {
@@ -135,7 +108,9 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
                 setContent {
                     TeamsFragmentLayout(
                         getTeamsList = it.teamsList,
-                        isLoading = it.isLoading
+                        isLoading = it.isLoading,
+                        listener = { onTeamItemClick(it) },
+                        changeThemeListener = { changeAppTheme() }
                     )
                 }
             }
@@ -155,19 +130,18 @@ class TeamsListFragment : Fragment(R.layout.teams_list_fragment) {
     @Composable
     fun TeamsFragmentLayout(
         getTeamsList: MutableList<TeamsList.Team>,
-        isLoading: Boolean
+        isLoading: Boolean,
+        listener: (TeamsList.Team) -> Unit,
+        changeThemeListener: () -> Unit
     ) {
         if (isLoading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator(
-                    color = Color(resources.getColor(R.color.orange_500))
-                )
-            }
+            LoadingScreenContent()
         } else {
-            TeamsListContent(teams = getTeamsList)
+            TeamsListContent(
+                teams = getTeamsList,
+                navigateToDetail = listener,
+                changeTheme = changeThemeListener
+            )
         }
     }
 }
